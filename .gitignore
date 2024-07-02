@@ -1,0 +1,15 @@
+
+# dotenv environment variables file
+.env
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+tmp/
+
+dump.rdb
+
+uploads
