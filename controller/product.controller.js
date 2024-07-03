@@ -3,7 +3,8 @@ const { Op } = require('sequelize');
 
 // Create a new product
 exports.createProduct = async (req, res) => {
-  const { name, description, category, price, stock, imageUrl } = req.body;
+  const { name, description, category, price, stock } = req.body;
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
   try {
     const product = await Product.create({ name, description, category, price, stock, imageUrl });

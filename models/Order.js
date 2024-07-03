@@ -1,49 +1,36 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/db');
-const User = require('./User');
-const Product = require('./Product');
+const mongoose = require('mongoose');
 
-const Order = sequelize.define('Order', {
+const OrderSchema = new mongoose.Schema({
   userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: User,
-      key: 'id'
-    }
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
   productId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Product,
-      key: 'id'
-    }
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true,
   },
   quantity: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 1
+    type: Number,
+    default: 1,
+    required: true,
   },
   totalPrice: {
-    type: DataTypes.FLOAT,
-    allowNull: false
+    type: Number,
+    required: true,
   },
   status: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: 'pending'
+    type: String,
+    default: 'pending',
+    required: true,
   },
   createdAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
-  }
+    type: Date,
+    default: Date.now,
+  },
 }, {
-  timestamps: false
+  timestamps: false,
 });
 
-// Establish relationships
-Order.belongsTo(User, { foreignKey: 'userId' });
-Order.belongsTo(Product, { foreignKey: 'productId' });
-
-module.exports = Order;
+module.exports = mongoose.model('Order', OrderSchema);

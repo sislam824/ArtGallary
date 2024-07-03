@@ -1,19 +1,21 @@
 const express = require('express');
-const { connectDB, syncDB } = require('./config/db');
+const { connectDB } = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const errorMiddleware = require('./middleware/errorMiddleware');
+const path = require('path');
 
 const app = express();
 
 // Connect Database
 connectDB();
-syncDB();
 
 // Init Middleware
 app.use(express.json());
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Define Routes
 app.use('/api/products', productRoutes);

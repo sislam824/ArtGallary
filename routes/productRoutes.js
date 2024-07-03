@@ -7,11 +7,13 @@ const {
   deleteProduct,
 } = require('../controller/product.controller');
 const authMiddleware = require('../middleware/authMiddleware');
+const upload = require('../config/multerConfig');
+
 
 const router = express.Router();
 
 // Create a new product
-router.post('/addProduct', createProduct);
+router.post('/addProduct', upload.single('image'), createProduct);
 
 // Get all products with sorting, filtering, and pagination
 router.get('/getProduct', getProducts);
