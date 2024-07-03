@@ -3,11 +3,11 @@ const { Op } = require('sequelize');
 
 // Create a new product
 exports.createProduct = async (req, res) => {
-  const { name, description, category, price, stock } = req.body;
-  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+  const { name, description, category, price, stock, imageUrl } = req.body;
 
   try {
-    const product = await Product.create({ name, description, category, price, stock, imageUrl });
+    const product = new Product({ name, description, category, price, stock, imageUrl });
+    await product.save();
     res.status(201).json(product);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -64,7 +64,7 @@ exports.getProductById = async (req, res) => {
 // Update a product by ID
 exports.updateProduct = async (req, res) => {
   const { id } = req.params;
-  const { name, description, price, stock } = req.body;
+  const { name, description, price, stock, imageUrl } = req.body;
 
   try {
     const product = await Product.findById(id);
@@ -77,6 +77,7 @@ exports.updateProduct = async (req, res) => {
     product.description = description || product.description;
     product.price = price || product.price;
     product.stock = stock || product.stock;
+    product.imageUrl = imageUrl || product.imageUrl;
 
     await product.save();
 
@@ -91,13 +92,11 @@ exports.deleteProduct = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const product = await Product.findById(id);
+    const product = await Product.findByIdAndDelete(id);
 
     if (!product) {
       return res.status(404).json({ msg: 'Product not found' });
     }
-
-    await product.remove();
 
     res.json({ msg: 'Product deleted' });
   } catch (err) {
