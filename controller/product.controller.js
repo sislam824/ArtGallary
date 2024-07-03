@@ -17,7 +17,7 @@ exports.createProduct = async (req, res) => {
 
 // Get all products with sorting, filtering, and pagination
 exports.getProducts = async (req, res) => {
-  const { sort, filter, page = 1, limit = 10 } = req.query;
+  const { sort, filter, page = 1, limit = 100 } = req.query;
 
   const skip = (page - 1) * limit;
   const sortOption = sort ? { [sort]: 1 } : { createdAt: -1 };
