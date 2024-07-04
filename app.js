@@ -15,7 +15,7 @@ connectDB();
 // Init Middleware
 app.use(express.json());
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(cors());
 
 // Define Routes
 app.use('/api/products', productRoutes);
